@@ -1,7 +1,6 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom";
-function Home(){
-  return <h1>Home</h1>
-}
+import Landing from "./assets/pages/Landing";
+
 function Dashboard() {
   return <h1>Dashboard</h1>
 }
@@ -22,7 +21,7 @@ function App(){
      <BrowserRouter>
       <Routes>
 
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
 
