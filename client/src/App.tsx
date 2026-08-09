@@ -1,9 +1,7 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import Landing from "./assets/pages/Landing";
+import Dashboard from "./assets/pages/Dashboard";
 
-function Dashboard() {
-  return <h1>Dashboard</h1>
-}
 
 function ReplyCoach() {
   return <h1>Reply Coach</h1>
