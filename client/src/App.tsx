@@ -1,11 +1,8 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import Landing from "./assets/pages/Landing";
 import Dashboard from "./assets/pages/Dashboard";
+import ReplyCoach from "./assets/pages/ReplyCoach";
 
-
-function ReplyCoach() {
-  return <h1>Reply Coach</h1>
-}
 
 function Practice() {
   return <h1>Conversation Practice</h1>

@@ -1,0 +1,263 @@
+
+import { useState } from "react"
+import Navbar from "../components/Navbar"
+
+const tones = [
+  "Casual",
+  "Friendly",
+  "Funny",
+  "Confident",
+  "Polite",
+  "Direct",
+]
+
+interface ReplyOptionProps {
+  number: string
+  text: string
+}
+
+function ReplyOption({ number, text }: ReplyOptionProps) {
+  const [copied, setCopied] = useState(false)
+
+  async function copyReply() {
+    try {
+      await navigator.clipboard.writeText(text)
+
+      setCopied(true)
+
+      setTimeout(() => {
+        setCopied(false)
+      }, 1500)
+
+    } catch (error) {
+      console.error("Copy failed:", error)
+
+      // Fallback for browsers where Clipboard API doesn't work
+      const textArea = document.createElement("textarea")
+      textArea.value = text
+      textArea.style.position = "fixed"
+      textArea.style.opacity = "0"
+
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+
+      try {
+        document.execCommand("copy")
+        setCopied(true)
+
+        setTimeout(() => {
+          setCopied(false)
+        }, 1500)
+      } catch (fallbackError) {
+        console.error("Fallback copy failed:", fallbackError)
+      }
+
+      document.body.removeChild(textArea)
+    }
+  }
+
+  return (
+    <div className="group flex gap-6 border border-white/10 bg-[#191917] p-6 transition hover:border-white/20">
+
+      <span className="text-xs font-bold text-white/20">
+        {number}
+      </span>
+
+      <p className="flex-1 text-sm leading-7 text-white/70">
+        {text}
+      </p>
+
+      <button
+        type="button"
+        onClick={copyReply}
+        className="self-start text-xs font-bold uppercase tracking-wider text-white/30 transition hover:text-[#c7ff3d]"
+      >
+        {copied ? "Copied ✓" : "Copy"}
+      </button>
+
+    </div>
+  )
+}
+
+function ReplyCoach() {
+
+  const [message, setMessage] = useState("")
+  const [tone, setTone] = useState("Casual")
+  const [generated, setGenerated] = useState(false)
+
+  function handleGenerate() {
+    if (!message.trim()) {
+      return
+    }
+
+    setGenerated(true)
+  }
+
+  return (
+    <div className="min-h-screen bg-[#11110f] text-[#f4f4f0]">
+
+      <Navbar />
+
+      <main className="mx-auto max-w-5xl px-6 py-12">
+
+        {/* HEADER */}
+
+        <section className="border-b border-white/10 pb-10">
+
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#c7ff3d]">
+            AI COMMUNICATION TOOL
+          </p>
+
+          <h1 className="mt-4 text-5xl font-black tracking-[-0.06em] md:text-6xl">
+            Reply Coach
+          </h1>
+
+          <p className="mt-4 max-w-xl text-sm leading-7 text-white/40">
+            Say what you actually mean without spending
+            twenty minutes rewriting one sentence.
+          </p>
+
+        </section>
+
+
+
+        <section className="mt-10">
+
+          <div className="flex items-center justify-between">
+
+            <label className="text-xs font-bold uppercase tracking-widest text-white/40">
+              What happened?
+            </label>
+
+            <span
+              className={`text-xs ${
+                message.length >= 450
+                  ? "text-red-400"
+                  : "text-white/30"
+              }`}
+            >
+              {message.length} / 500
+            </span>
+
+          </div>
+
+          <textarea
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
+            maxLength={500}
+            placeholder="Paste the message you've been overthinking..."
+            className="mt-4 min-h-[180px] w-full resize-none border border-white/10 bg-[#191917] p-6 text-lg text-white outline-none transition placeholder:text-white/20 focus:border-[#c7ff3d]"
+          />
+
+        </section>
+
+
+
+        <section className="mt-8">
+
+          <p className="text-xs font-bold uppercase tracking-widest text-white/40">
+            How should it sound?
+          </p>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+
+            {tones.map((item) => (
+
+              <button
+                type="button"
+                key={item}
+                onClick={() => setTone(item)}
+                className={`
+                  border px-5 py-3 text-sm transition
+                  ${
+                    tone === item
+                      ? "border-[#c7ff3d] bg-[#c7ff3d] text-[#11110f]"
+                      : "border-white/10 text-white/50 hover:border-white/30 hover:text-white"
+                  }
+                `}
+              >
+                {item}
+              </button>
+
+            ))}
+
+          </div>
+
+        </section>
+
+
+        <section className="mt-10 flex justify-end">
+
+          <button
+            type="button"
+            onClick={handleGenerate}
+            disabled={!message.trim()}
+            className="bg-[#c7ff3d] px-8 py-4 text-sm font-black uppercase tracking-wide text-[#11110f] transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            Generate replies →
+          </button>
+
+        </section>
+
+
+
+        {generated && (
+
+          <section className="mt-16 border-t border-white/10 pt-10">
+
+            <div className="flex items-center justify-between">
+
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/30">
+                YOUR OPTIONS
+              </p>
+
+              <span className="text-xs text-white/20">
+                Tone: {tone}
+              </span>
+
+            </div>
+
+
+            <div className="mt-6 space-y-3">
+
+              <ReplyOption
+                number="01"
+                text={
+                  tone === "Funny"
+                    ? "Ahh I couldn't make it 😭 I was fighting for my life at home. How was it?"
+                    : "Ahh I couldn't make it this time. How was the party?"
+                }
+              />
+
+              <ReplyOption
+                number="02"
+                text={
+                  tone === "Direct"
+                    ? "I couldn't come this time. Did you guys have fun?"
+                    : "I wasn't able to come this time. Did you guys have fun?"
+                }
+              />
+
+              <ReplyOption
+                number="03"
+                text={
+                  tone === "Confident"
+                    ? "Couldn't make it this time, unfortunately. I'll join you guys next time."
+                    : "I couldn't make it this time, but hopefully I'll be there next time!"
+                }
+              />
+
+            </div>
+
+          </section>
+
+        )}
+
+      </main>
+
+    </div>
+  )
+}
+
+export default ReplyCoach;
