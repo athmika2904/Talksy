@@ -1,22 +1,30 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-dotenv.config();
-const app=express();
-app.use(cors());
-app.use(express.json());
-app.get("/",(req,res)=>{
+import express from "express"
+import cors from "cors"
+
+import aiRoutes from "./routes/aiRoutes.js"
+
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+
+app.get("/", (req, res) => {
     res.json({
-        message:"Talksy API is running"
+        message: "Social Anxiety Assistant API is running"
     })
 })
-app.get("/api/health",(req,res)=>{
+
+app.get("/api/health", (req, res) => {
     res.json({
-        status:"OK",
-        project:"Social Anxiety Assistant"
+        status: "OK",
+        project: "Social Anxiety Assistant"
     })
 })
-const PORT=process.env.port||5000;
-app.listen(PORT,()=>{
+
+app.use("/api/ai", aiRoutes)
+
+const PORT = process.env.PORT || 5000
+
+app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
