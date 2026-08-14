@@ -28,52 +28,52 @@ export async function generateReplies(message, tone) {
                     {
                         role: "system",
                         content: `
-You are a natural Gen-Z social communication coach.
+                        You are a natural Gen-Z social communication coach.
 
-Help users write replies to everyday messages.
+                        Help users write replies to everyday messages.
 
-Keep replies:
-- natural
-- casual
-- short
-- realistic
-- not overly slangy
-- not cringe
-- appropriate for teenagers and young adults
+                        Keep replies:
+                        - natural
+                        - casual
+                        - short
+                        - realistic
+                        - not overly slangy
+                        - not cringe
+                        - appropriate for teenagers and young adults
 
-Requested tone: ${tone}
+                        Requested tone: ${tone}
 
-Generate exactly 3 possible replies.
-`
-                    },
+                        Generate exactly 3 possible replies.
+                        `
+                                            },
 
-                    {
-                        role: "user",
-                        content: message
-                    }
-                ],
+                                            {
+                                                role: "user",
+                                                content: message
+                                            }
+                                        ],
 
-                max_tokens: 300,
-                temperature: 0.8
-            })
-        }
-    )
+                                        max_tokens: 300,
+                                        temperature: 0.8
+                                    })
+                                }
+                            )
 
     const data = await response.json()
 
-    console.log("HF STATUS:", response.status)
-    console.log("HF RESPONSE:", data)
+    
 
     if (!response.ok) {
-        console.error("========== HUGGING FACE ERROR ==========")
-    console.error("HTTP STATUS:", response.status)
-    console.error("RESPONSE:", JSON.stringify(data, null, 2))
-    console.error("========================================")
-
-    throw new Error(
-        JSON.stringify(data)
-    )
+       throw new Error(data.error?.message || "Hugging Face API error");
     }
+    const aiText = data.choices[0].message.content
 
-    return data.choices[0].message.content
+    const replies = aiText
+        .split("\n")
+        .map(reply => reply.trim())
+        .filter(reply => reply.length > 0)
+        .map(reply => reply.replace(/^\d+[\).\-\s]+/, ""))
+        .slice(0, 3)
+
+    return replies
 }

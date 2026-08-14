@@ -9,7 +9,6 @@ function Landing() {
 
       <main>
 
-        {/* Hero */}
 
         <section className="relative overflow-hidden border-b border-white/10">
 
@@ -65,7 +64,7 @@ function Landing() {
               </div>
 
 
-              {/* Right side visual */}
+   
 
               <div className="relative">
 
@@ -120,7 +119,6 @@ function Landing() {
         </section>
 
 
-        {/* Features */}
 
         <section className="mx-auto max-w-7xl px-6 py-24">
 

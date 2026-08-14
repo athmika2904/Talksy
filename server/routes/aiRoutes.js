@@ -30,23 +30,16 @@ router.post("/reply", async (req, res) => {
 
         res.json({
             success: true,
-            data: result,
+            replies: result
         })
 
     } catch (error) {
-        console.error("========== AI ERROR ==========")
-    console.error("Message:", error.message)
-    console.error("Status:", error.status)
-    console.error("Response:", error.response)
-    console.error("Cause:", error.cause)
-    console.error("==============================")
+        console.error("AI Error:", error.message);
 
-    res.status(500).json({
-        success: false,
-        message: error.message,
-        status: error.status || null
-    })
-        
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 })
 

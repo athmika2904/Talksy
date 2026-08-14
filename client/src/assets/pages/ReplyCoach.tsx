@@ -1,7 +1,7 @@
 
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import Navbar from "../components/Navbar"
-
+import axios from "axios"
 const tones = [
   "Casual",
   "Friendly",
@@ -32,7 +32,6 @@ function ReplyOption({ number, text }: ReplyOptionProps) {
     } catch (error) {
       console.error("Copy failed:", error)
 
-      // Fallback for browsers where Clipboard API doesn't work
       const textArea = document.createElement("textarea")
       textArea.value = text
       textArea.style.position = "fixed"
@@ -84,15 +83,57 @@ function ReplyCoach() {
 
   const [message, setMessage] = useState("")
   const [tone, setTone] = useState("Casual")
-  const [generated, setGenerated] = useState(false)
-
-  function handleGenerate() {
+  const [replies, setReplies] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
+    useEffect(() => {
+      if (replies.length > 0 && !loading) {
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth",
+          })
+        }, 100)
+      }
+    }, [replies, loading])
+  async function handleGenerate() {
     if (!message.trim()) {
+            setError("Write a message first.")
       return
     }
 
-    setGenerated(true)
-  }
+    setLoading(true)
+        setError("")
+        setReplies([])
+  
+
+        try {
+
+            const response = await axios.post(
+                "http://localhost:5000/api/ai/reply",
+                {
+                    message,
+                    tone
+                }
+            )
+
+            setReplies(response.data.replies)
+            
+        } catch (error:any) {
+
+            console.error(error)
+
+            setError(
+                error.response?.data?.message ||
+                "Something went wrong. Please try again."
+            )
+
+        } finally {
+
+            setLoading(false)
+
+        }
+      }
 
   return (
     <div className="min-h-screen bg-[#11110f] text-[#f4f4f0]">
@@ -101,7 +142,7 @@ function ReplyCoach() {
 
       <main className="mx-auto max-w-5xl px-6 py-12">
 
-        {/* HEADER */}
+        
 
         <section className="border-b border-white/10 pb-10">
 
@@ -192,17 +233,55 @@ function ReplyCoach() {
           <button
             type="button"
             onClick={handleGenerate}
-            disabled={!message.trim()}
+            disabled={!message.trim()||loading}
             className="bg-[#c7ff3d] px-8 py-4 text-sm font-black uppercase tracking-wide text-[#11110f] transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-30"
           >
-            Generate replies →
+            {loading
+              ? "Thinking..."
+              : "Generate replies →"
+            }
           </button>
 
         </section>
+        
+           {error && (
 
+          <div className="mt-6 border border-red-400/20 bg-red-400/5 px-5 py-4">
 
+            <p className="text-sm text-red-400">
+              {error}
+            </p>
 
-        {generated && (
+          </div>
+
+        )}
+ 
+        {loading && (
+
+          <section className="mt-16 border-t border-white/10 pt-10">
+
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/30">
+              AI IS THINKING...
+            </p>
+
+            <div className="mt-6 space-y-3">
+
+              {[1, 2, 3].map((item) => (
+
+                <div
+                  key={item}
+                  className="h-24 animate-pulse border border-white/10 bg-[#191917]"
+                />
+
+              ))}
+
+            </div>
+
+          </section>
+
+        )}
+
+        {!loading && replies.length>0 &&(
 
           <section className="mt-16 border-t border-white/10 pt-10">
 
@@ -221,32 +300,15 @@ function ReplyCoach() {
 
             <div className="mt-6 space-y-3">
 
-              <ReplyOption
-                number="01"
-                text={
-                  tone === "Funny"
-                    ? "Ahh I couldn't make it 😭 I was fighting for my life at home. How was it?"
-                    : "Ahh I couldn't make it this time. How was the party?"
-                }
-              />
+              {replies.map((reply, index) => (
 
-              <ReplyOption
-                number="02"
-                text={
-                  tone === "Direct"
-                    ? "I couldn't come this time. Did you guys have fun?"
-                    : "I wasn't able to come this time. Did you guys have fun?"
-                }
-              />
+                <ReplyOption
+                  key={index}
+                  number={`0${index + 1}`}
+                  text={reply}
+                />
 
-              <ReplyOption
-                number="03"
-                text={
-                  tone === "Confident"
-                    ? "Couldn't make it this time, unfortunately. I'll join you guys next time."
-                    : "I couldn't make it this time, but hopefully I'll be there next time!"
-                }
-              />
+              ))}
 
             </div>
 
