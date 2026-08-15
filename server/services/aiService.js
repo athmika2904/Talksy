@@ -44,6 +44,17 @@ export async function generateReplies(message, tone) {
                         Requested tone: ${tone}
 
                         Generate exactly 3 possible replies.
+                        Each reply should be noticeably different in wording and approach.
+
+                        For example:
+                        - one can be simple and casual
+                        - one can be playful
+                        - one can be slightly more confident
+
+                        Do not repeat the same sentence structure.
+
+                        Write like a real young person texting.
+                        Avoid cringe slang, excessive emojis, and robotic language.
                         `
                                             },
 

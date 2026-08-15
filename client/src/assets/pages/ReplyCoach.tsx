@@ -228,7 +228,20 @@ function ReplyCoach() {
         </section>
 
 
-        <section className="mt-10 flex justify-end">
+        <section className="mt-10 flex items-center justify-end gap-3">
+            {message && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMessage("")
+                  setReplies([])
+                  setError("")
+                }}
+                className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-white/30 transition hover:text-white"
+              >
+                Clear
+              </button>
+            )}
 
           <button
             type="button"
@@ -310,6 +323,16 @@ function ReplyCoach() {
 
               ))}
 
+            </div>
+            <div className="mt-8 flex justify-end">
+              <button
+                type="button"
+                onClick={handleGenerate}
+                disabled={loading}
+                className="border border-white/10 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white/40 transition hover:border-[#c7ff3d] hover:text-[#c7ff3d] disabled:opacity-30"
+              >
+                ↻ Regenerate
+              </button>
             </div>
 
           </section>
