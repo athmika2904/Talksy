@@ -7,7 +7,7 @@ router.post("/reply", async (req, res) => {
 
     try {
 
-        const { message, tone } = req.body
+        const { message, context ,tone,concerns } = req.body
 
         if (!message || !message.trim()) {
             return res.status(400).json({
@@ -25,7 +25,9 @@ router.post("/reply", async (req, res) => {
 
         const result = await generateReplies(
             message,
-            tone
+            context,
+            tone,
+            concerns
         )
 
         res.json({

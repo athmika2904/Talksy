@@ -10,7 +10,14 @@ const tones = [
   "Polite",
   "Direct",
 ]
-
+const concerns = [
+  "Don't know what to say",
+  "Don't want to sound desperate",
+  "Worried they'll judge me",
+  "Don't know how to continue",
+  "Afraid of being awkward",
+  "Just want a better reply",
+]
 interface ReplyOptionProps {
   number: string
   text: string
@@ -83,8 +90,10 @@ function ReplyCoach() {
 
   const [message, setMessage] = useState("")
   const [tone, setTone] = useState("Casual")
+  const [context, setContext] = useState("")
   const [replies, setReplies] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+  const [selectedConcerns, setSelectedConcerns] = useState<string[]>([])
     const [error, setError] = useState("")
     useEffect(() => {
       if (replies.length > 0 && !loading) {
@@ -113,7 +122,9 @@ function ReplyCoach() {
                 "http://localhost:5000/api/ai/reply",
                 {
                     message,
-                    tone
+                    context,
+                    tone,
+                    concerns:selectedConcerns,
                 }
             )
 
@@ -133,6 +144,20 @@ function ReplyCoach() {
             setLoading(false)
 
         }
+      }
+      function toggleConcern(concern: string) {
+
+        setSelectedConcerns((current) => {
+
+          if (current.includes(concern)) {
+
+            return current.filter((item) => item !== concern)
+
+          }
+
+          return [...current, concern]
+
+        })
       }
 
   return (
@@ -191,8 +216,81 @@ function ReplyCoach() {
             className="mt-4 min-h-[180px] w-full resize-none border border-white/10 bg-[#191917] p-6 text-lg text-white outline-none transition placeholder:text-white/20 focus:border-[#c7ff3d]"
           />
 
+          <div className="mt-8">
+
+  <div className="flex items-center justify-between">
+
+    <label className="text-xs font-bold uppercase tracking-widest text-white/40">
+      Give some context
+    </label>
+
+    <span className="text-xs text-white/20">
+      Optional
+    </span>
+
+  </div>
+
+        <textarea
+          value={context}
+          onChange={(event) => setContext(event.target.value)}
+          maxLength={300}
+          placeholder="What's the situation? Who are you talking to? What are you worried about?"
+          className="mt-4 min-h-[120px] w-full resize-none border border-white/10 bg-[#191917] p-5 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-[#c7ff3d]"
+        />
+
+        <p className="mt-2 text-xs text-white/20">
+          Example: "It's someone I like and I don't want to sound too eager."
+        </p>
+
+      </div>
+
         </section>
 
+        <section className="mt-8">
+
+          <div className="flex items-center justify-between">
+
+            <p className="text-xs font-bold uppercase tracking-widest text-white/40">
+              What's making this hard?
+            </p>
+
+            <span className="text-xs text-white/20">
+              Optional
+            </span>
+
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+
+            {concerns.map((concern) => {
+
+              const selected = selectedConcerns.includes(concern)
+
+              return (
+
+                <button
+                  type="button"
+                  key={concern}
+                  onClick={() => toggleConcern(concern)}
+                  className={`
+                    border px-4 py-3 text-sm transition
+                    ${
+                      selected
+                        ? "border-[#c7ff3d] bg-[#c7ff3d] text-[#11110f]"
+                        : "border-white/10 text-white/50 hover:border-white/30 hover:text-white"
+                    }
+                  `}
+                >
+                  {concern}
+                </button>
+
+              )
+
+            })}
+
+          </div>
+
+        </section>
 
 
         <section className="mt-8">
