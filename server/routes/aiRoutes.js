@@ -7,7 +7,7 @@ router.post("/reply", async (req, res) => {
 
     try {
 
-        const { message, context ,tone,concerns } = req.body
+        const { message, context ,tone,concerns,intent } = req.body
 
         if (!message || !message.trim()) {
             return res.status(400).json({
@@ -27,7 +27,8 @@ router.post("/reply", async (req, res) => {
             message,
             context,
             tone,
-            concerns
+            concerns,
+            intent
         )
 
         res.json({

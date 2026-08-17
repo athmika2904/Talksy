@@ -9,7 +9,7 @@ dotenv.config({
     path: path.resolve(__dirname, "../.env")
 })
 
-export async function generateReplies(message,context, tone,concerns) {
+export async function generateReplies(message,context, tone,concerns,intent) {
 
     const response = await fetch(
         "https://router.huggingface.co/v1/chat/completions",
@@ -89,7 +89,8 @@ export async function generateReplies(message,context, tone,concerns) {
                                                     ? concerns.join(", ")
                                                     : "No specific concern provided."
                                             }
-
+                                            What the user wants their reply to accomplish:
+                                            "${intent}"
                             Generate exactly 3 possible replies.
 
                             Each reply should be noticeably different in wording

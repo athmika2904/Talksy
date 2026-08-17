@@ -18,6 +18,15 @@ const concerns = [
   "Afraid of being awkward",
   "Just want a better reply",
 ]
+const intents = [
+  "Continue the conversation",
+  "Make plans",
+  "Show interest",
+  "Politely decline",
+  "Apologize",
+  "Set a boundary",
+  "Keep it short",
+]
 interface ReplyOptionProps {
   number: string
   text: string
@@ -94,6 +103,7 @@ function ReplyCoach() {
   const [replies, setReplies] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [selectedConcerns, setSelectedConcerns] = useState<string[]>([])
+  const [intent, setIntent] = useState("Continue the conversation")
     const [error, setError] = useState("")
     useEffect(() => {
       if (replies.length > 0 && !loading) {
@@ -125,6 +135,7 @@ function ReplyCoach() {
                     context,
                     tone,
                     concerns:selectedConcerns,
+                    intent,
                 }
             )
 
@@ -291,7 +302,42 @@ function ReplyCoach() {
           </div>
 
         </section>
+        
+        <section className="mt-8">
 
+            <div className="flex items-center justify-between">
+
+              <p className="text-xs font-bold uppercase tracking-widest text-white/40">
+                What do you want your reply to do?
+              </p>
+
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+
+              {intents.map((item) => (
+
+                <button
+                  type="button"
+                  key={item}
+                  onClick={() => setIntent(item)}
+                  className={`
+                    border px-4 py-3 text-sm transition
+                    ${
+                      intent === item
+                        ? "border-[#c7ff3d] bg-[#c7ff3d] text-[#11110f]"
+                        : "border-white/10 text-white/50 hover:border-white/30 hover:text-white"
+                    }
+                  `}
+                >
+                  {item}
+                </button>
+
+              ))}
+
+            </div>
+
+          </section>
 
         <section className="mt-8">
 
