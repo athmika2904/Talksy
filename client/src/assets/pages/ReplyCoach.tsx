@@ -104,6 +104,7 @@ function ReplyCoach() {
   const [loading, setLoading] = useState(false)
   const [selectedConcerns, setSelectedConcerns] = useState<string[]>([])
   const [intent, setIntent] = useState("Continue the conversation")
+  const [mode, setMode] = useState<"message" | "conversation">("message")
     const [error, setError] = useState("")
     useEffect(() => {
       if (replies.length > 0 && !loading) {
@@ -136,6 +137,7 @@ function ReplyCoach() {
                     tone,
                     concerns:selectedConcerns,
                     intent,
+                    mode,
                 }
             )
 
@@ -197,14 +199,56 @@ function ReplyCoach() {
 
         </section>
 
+        <section className="mt-10">
 
+          <p className="text-xs font-bold uppercase tracking-widest text-white/40">
+            What are you replying to?
+          </p>
+
+          <div className="mt-4 flex gap-2">
+
+            <button
+              type="button"
+              onClick={() => setMode("message")}
+              className={`
+                border px-5 py-3 text-sm transition
+                ${
+                  mode === "message"
+                    ? "border-[#c7ff3d] bg-[#c7ff3d] text-[#11110f]"
+                    : "border-white/10 text-white/50 hover:border-white/30"
+                }
+              `}
+            >
+              One message
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMode("conversation")}
+              className={`
+                border px-5 py-3 text-sm transition
+                ${
+                  mode === "conversation"
+                    ? "border-[#c7ff3d] bg-[#c7ff3d] text-[#11110f]"
+                    : "border-white/10 text-white/50 hover:border-white/30"
+                }
+              `}
+            >
+              Full conversation
+            </button>
+
+          </div>
+
+        </section>
 
         <section className="mt-10">
 
           <div className="flex items-center justify-between">
 
             <label className="text-xs font-bold uppercase tracking-widest text-white/40">
-              What happened?
+              {mode === "message"
+                ? "What happened?"
+                : "Paste the conversation"}
             </label>
 
             <span
@@ -223,8 +267,18 @@ function ReplyCoach() {
             value={message}
             onChange={(event) => setMessage(event.target.value)}
             maxLength={500}
-            placeholder="Paste the message you've been overthinking..."
-            className="mt-4 min-h-[180px] w-full resize-none border border-white/10 bg-[#191917] p-6 text-lg text-white outline-none transition placeholder:text-white/20 focus:border-[#c7ff3d]"
+            placeholder={
+              mode === "message"
+                ? "Paste the message you've been overthinking..."
+                : "Paste the conversation here...\n\nThem: ...\nYou: ...\nThem: ..."
+            }
+            className={`
+              mt-4 w-full resize-none border border-white/10
+              bg-[#191917] p-6 text-lg text-white outline-none
+              transition placeholder:text-white/20
+              focus:border-[#c7ff3d]
+              ${mode === "conversation" ? "min-h-[280px]" : "min-h-[180px]"}
+            `}
           />
 
           <div className="mt-8">

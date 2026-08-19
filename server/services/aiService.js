@@ -9,7 +9,7 @@ dotenv.config({
     path: path.resolve(__dirname, "../.env")
 })
 
-export async function generateReplies(message,context, tone,concerns,intent) {
+export async function generateReplies(message,context, tone,concerns,intent,mode) {
 
     const response = await fetch(
         "https://router.huggingface.co/v1/chat/completions",
@@ -91,15 +91,42 @@ export async function generateReplies(message,context, tone,concerns,intent) {
                                             }
                                             What the user wants their reply to accomplish:
                                             "${intent}"
-                            Generate exactly 3 possible replies.
+                                            ${
+                                                mode === "conversation"
+                                                ? `
+                                            This is a full conversation.
 
-                            Each reply should be noticeably different in wording
-                            and approach.
+                                            Understand:
+                                            - who said what
+                                            - the flow of the conversation
+                                            - the emotional tone
+                                            - what the other person is likely asking
+                                            - what would naturally make sense as the next message
 
-                            The replies should directly address the user's situation
-                            without explicitly mentioning their concerns.
+                                            Do not respond to every message in the conversation.
+                                            Suggest only the next message the user should send.
+                                            `
+                                                : `
+                                            This is a single message.
+                                            Focus on creating a natural response to that message.
+                                            `
+                                            }
 
-                            Keep the replies natural and realistic for a young person`
+                                            Generate exactly 3 possible replies.
+
+                                            Each reply should:
+                                            - be noticeably different
+                                            - match the requested tone
+                                            - match the user's intent
+                                            - fit the conversation
+                                            - sound like a real young person
+                                            - avoid robotic language
+                                            - avoid excessive slang
+                                            - avoid cringe expressions
+
+                                            Do not explain the replies.
+                                            Return only the 3 replies.
+                                            `
                                             }
                                         ],
 
