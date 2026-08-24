@@ -1,7 +1,7 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom";
-import Landing from "./assets/pages/Landing";
-import Dashboard from "./assets/pages/Dashboard";
-import ReplyCoach from "./assets/pages/ReplyCoach";
+import Landing from "./pages/Landing";
+import Dashboard from "./pages/Dashboard";
+import ReplyCoach from "./pages/ReplyCoach";
 
 
 function Practice() {

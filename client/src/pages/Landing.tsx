@@ -128,7 +128,7 @@ function Landing() {
               WHAT YOU CAN DO
             </p>
 
-            <h2 className="mt-4 text-4xl font-black tracking-[-0.05em] md:text-5xl">
+            <h2 className="mt-4 text-4xl font-black tracking-tighter md:text-5xl">
               Social situations.
               <br />
               Less intimidating.
@@ -181,7 +181,7 @@ function Feature({
 }: FeatureProps) {
 
   return (
-    <div className="group border-b border-r border-white/10 p-8 transition hover:bg-white/[0.03]">
+    <div className="group border-b border-r border-white/10 p-8 transition hover:bg-white/3">
 
       <div className="mb-20 flex items-start justify-between">
 
