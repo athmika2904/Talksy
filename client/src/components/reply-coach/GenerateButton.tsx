@@ -1,12 +1,12 @@
 interface GenerateButtonProps {
-  message: string
+  canGenerate: boolean
   loading: boolean
   onGenerate: () => void
   onClear: () => void
 }
 
 function GenerateButton({
-  message,
+  canGenerate,
   loading,
   onGenerate,
   onClear,
@@ -15,7 +15,7 @@ function GenerateButton({
   return (
     <section className="mt-10 flex items-center justify-end gap-3">
 
-      {message && (
+      {canGenerate && (
         <button
           type="button"
           onClick={onClear}
@@ -28,7 +28,7 @@ function GenerateButton({
       <button
         type="button"
         onClick={onGenerate}
-        disabled={!message.trim() || loading}
+        disabled={!canGenerate || loading}
         className="bg-[#c7ff3d] px-8 py-4 text-sm font-black uppercase tracking-wide text-[#11110f] transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-30"
       >
         {loading

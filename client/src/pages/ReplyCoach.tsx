@@ -34,6 +34,8 @@ function ReplyCoach() {
       "message"
     )
 
+  const [screenshot, setScreenshot] =
+    useState<File | null>(null)
 
   useEffect(() => {
 
@@ -122,7 +124,7 @@ function ReplyCoach() {
     setMessage("")
     setReplies([])
     setError("")
-
+    setScreenshot(null)
   }
 
 
@@ -162,6 +164,8 @@ function ReplyCoach() {
           message={message}
           setMessage={setMessage}
           mode={mode}
+          screenshot={screenshot}
+          setScreenshot={setScreenshot}
         />
 
 
@@ -190,7 +194,11 @@ function ReplyCoach() {
 
 
         <GenerateButton
-          message={message}
+          canGenerate={
+          mode === "screenshot"
+          ? screenshot !== null
+          : message.trim().length > 0
+  }
           loading={loading}
           onGenerate={handleGenerate}
           onClear={handleClear}
