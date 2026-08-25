@@ -1,14 +1,14 @@
 import ReplyOption from "./ReplyOption"
 
 interface ReplyResultsProps {
-  replies: string[]
+  replies?: string[]
   tone: string
   loading: boolean
   onRegenerate: () => void
 }
 
 function ReplyResults({
-  replies,
+  replies=[],
   tone,
   loading,
   onRegenerate,

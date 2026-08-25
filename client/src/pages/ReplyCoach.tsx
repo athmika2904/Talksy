@@ -57,11 +57,20 @@ function ReplyCoach() {
 
   async function handleGenerate() {
 
-    if (!message.trim()) {
+    if (mode === "screenshot") {
 
-      setError("Write a message first.")
+    if (!screenshot) {
+        setError("Upload a screenshot first.")
+        return
+    }
 
-      return
+    } else {
+
+        if (!message.trim()) {
+            setError("Write a message first.")
+            return
+        }
+
     }
 
     setLoading(true)
@@ -70,17 +79,37 @@ function ReplyCoach() {
 
     try {
 
-      const response = await axios.post(
-        "http://localhost:5000/api/ai/reply",
-        {
-          message,
-          context,
-          tone,
-          concerns: selectedConcerns,
-          intent,
-          mode,
+      
+        const formData = new FormData()
+
+        formData.append("message", message)
+
+        formData.append("context", context)
+
+        formData.append("tone", tone)
+
+        formData.append(
+            "concerns",
+            JSON.stringify(selectedConcerns)
+        )
+
+        formData.append("intent", intent)
+
+        formData.append("mode", mode)
+
+        if (screenshot) {
+
+            formData.append(
+                "screenshot",
+                screenshot
+            )
+
         }
-      )
+
+        const response = await axios.post(
+            "http://localhost:5000/api/ai/reply",
+            formData
+        )
 
       setReplies(response.data.replies)
 
@@ -221,14 +250,14 @@ function ReplyCoach() {
 
         {loading && <LoadingReplies />}
 
-
-
         <ReplyResults
-          replies={replies}
-          tone={tone}
-          loading={loading}
-          onRegenerate={handleGenerate}
-        />
+        replies={replies}
+        tone={tone}
+        loading={loading}
+        onRegenerate={handleGenerate}
+      />
+        
+
 
       </main>
 

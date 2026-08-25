@@ -1,49 +1,43 @@
 import express from "express"
 import { generateReplies } from "../services/aiService.js"
-
+import upload from "../middleware/upload.js"
 const router = express.Router()
 
-router.post("/reply", async (req, res) => {
+router.post(
+    "/reply",
+    upload.single("screenshot"),
+    async (req, res) => {
 
-    try {
+        try {
 
-        const { message, context ,tone,concerns,intent } = req.body
+            console.log("BODY:", req.body)
 
-        if (!message || !message.trim()) {
-            return res.status(400).json({
+            console.log(
+                "FILE:",
+                req.file
+                    ? {
+                        name: req.file.originalname,
+                        type: req.file.mimetype,
+                        size: req.file.size,
+                    }
+                    : null
+            )
+            res.json({
+                success: true,
+                message: "Screenshot received successfully",
+            })
+
+
+        } catch (error) {
+
+            console.error(error)
+
+            res.status(500).json({
                 success: false,
-                message: "Message is required",
+                message: error.message,
             })
         }
-
-        if (!tone) {
-            return res.status(400).json({
-                success: false,
-                message: "Tone is required",
-            })
-        }
-
-        const result = await generateReplies(
-            message,
-            context,
-            tone,
-            concerns,
-            intent
-        )
-
-        res.json({
-            success: true,
-            replies: result
-        })
-
-    } catch (error) {
-        console.error("AI Error:", error.message);
-
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
     }
-})
+)
 
 export default router
