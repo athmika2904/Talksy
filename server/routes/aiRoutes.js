@@ -1,5 +1,5 @@
 import express from "express"
-import { generateReplies } from "../services/aiService.js"
+import { generateReplies,analyzeScreenshot } from "../services/aiService.js"
 import upload from "../middleware/upload.js"
 const router = express.Router()
 
@@ -22,9 +22,66 @@ router.post(
                     }
                     : null
             )
-            res.json({
+             if (req.body.mode === "screenshot") {
+
+                if (!req.file) {
+
+                    return res.status(400).json({
+                        success: false,
+                        message: "Screenshot is required.",
+                    })
+
+                }
+
+
+                const conversation =
+                    await analyzeScreenshot(
+                        req.file.buffer,
+                        req.file.mimetype
+                    )
+
+
+                console.log(
+                    "AI UNDERSTOOD:",
+                    conversation
+                )
+                const concerns =
+                    JSON.parse(req.body.concerns || "[]")
+
+                const replies =
+                    await generateReplies(
+                        conversation,
+                        req.body.context,
+                        req.body.tone,
+                        concerns,
+                        req.body.intent,
+                        "conversation"
+                    )
+
+
+                return res.json({
+                    success: true,
+                    replies,
+                })
+            }
+
+            const concerns =
+                JSON.parse(req.body.concerns || "[]")
+
+            const replies =
+                await generateReplies(
+                    req.body.message,
+                    req.body.context,
+                    req.body.tone,
+                    concerns,
+                    req.body.intent,
+                    req.body.mode
+                )
+
+
+            return res.json({
                 success: true,
-                message: "Screenshot received successfully",
+                replies,
             })
 
 
