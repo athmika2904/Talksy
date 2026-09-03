@@ -119,7 +119,21 @@ The response MUST follow this exact structure:
     "reply 3"
   ]
 }
+The 3 replies MUST have different approaches.
 
+Reply 1:
+The safest and most natural option.
+
+Reply 2:
+A slightly more playful or relaxed option.
+
+Reply 3:
+A slightly more confident or direct option.
+
+Do not simply change one or two words between replies.
+
+Each reply should give the user a genuinely different
+way to respond.
 There must be exactly 3 strings inside the replies array.
 
 Do not add anything before or after the JSON.
@@ -156,7 +170,36 @@ ${
 USER'S GOAL:
 
 "${intent || "Continue the conversation"}"
+id="intent-rules"
+IMPORTANT INTENT RULE:
 
+The user's selected goal is the MOST IMPORTANT instruction
+when generating the replies.
+
+The replies must clearly accomplish this goal.
+
+If the goal is "Continue the conversation":
+Keep the conversation naturally going.
+
+If the goal is "Make plans":
+Move the conversation toward making or confirming plans.
+
+If the goal is "Show interest":
+Show genuine interest and encourage the other person to continue.
+
+If the goal is "Politely decline":
+Clearly decline without sounding rude or unnecessarily apologetic.
+
+If the goal is "Apologize":
+Acknowledge what happened and give a natural apology.
+
+If the goal is "Set a boundary":
+Be respectful but clearly communicate the user's boundary.
+
+If the goal is "Keep it short":
+Keep each reply extremely concise, ideally one sentence.
+
+Never ignore the user's selected goal.
 
 MODE:
 

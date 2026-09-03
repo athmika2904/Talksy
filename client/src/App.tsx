@@ -2,11 +2,9 @@ import {BrowserRouter,Routes,Route} from "react-router-dom";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import ReplyCoach from "./pages/ReplyCoach";
+import PracticeSetup from "./pages/Practice/PracticeSetup";
 
 
-function Practice() {
-  return <h1>Conversation Practice</h1>
-}
 
 function Challenges() {
   return <h1>Challenges</h1>
@@ -27,7 +25,7 @@ function App(){
 
         <Route
           path="/practice"
-          element={<Practice />}
+          element={<PracticeSetup />}
         />
 
         <Route

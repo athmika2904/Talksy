@@ -143,18 +143,21 @@ function Landing() {
               number="01"
               title="REPLY COACH"
               description="Turn the message you've rewritten 12 times into something that actually sounds like you."
+              link="/reply-coach"
             />
 
             <Feature
               number="02"
               title="PRACTICE"
               description="Have the awkward conversation here first. Nobody judges your first attempt."
+              link="/practice"
             />
 
             <Feature
               number="03"
               title="CHALLENGES"
               description="Small real-world missions designed to slowly push you outside your comfort zone."
+              link="/challenges"
             />
 
           </div>
@@ -172,6 +175,7 @@ interface FeatureProps {
   number: string
   title: string
   description: string
+  link :string
 }
 
 function Feature({

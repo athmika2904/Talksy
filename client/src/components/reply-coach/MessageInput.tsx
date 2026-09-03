@@ -154,6 +154,7 @@ function MessageInput({
               onChange={handleScreenshotChange}
               className="hidden"
             />
+            
 
           </label>
 
@@ -229,10 +230,15 @@ function MessageInput({
               />
 
             </label>
+            
 
           </div>
 
         )}
+        <p className="mt-3 text-xs leading-5 text-white/25">
+              Your screenshot is used only to understand the conversation
+              and generate replies. It isn't stored by the app.
+            </p>
 
       </section>
 
