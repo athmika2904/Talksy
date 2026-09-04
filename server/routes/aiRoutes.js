@@ -1,9 +1,9 @@
 import express from "express"
 import { generateReplies,analyzeScreenshot } from "../services/aiService.js"
 import upload from "../middleware/upload.js"
-const router = express.Router()
+const aiRoutes = express.Router()
 
-router.post(
+aiRoutes.post(
     "/reply",
     upload.single("screenshot"),
     async (req, res) => {
@@ -97,4 +97,4 @@ router.post(
     }
 )
 
-export default router
+export default aiRoutes

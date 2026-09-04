@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors"
 
 import aiRoutes from "./routes/aiRoutes.js"
-
+import Practicerouter from "./routes/practiceRoutes.js"
 const app = express()
 
 app.use(cors())
@@ -22,6 +22,7 @@ app.get("/api/health", (req, res) => {
 })
 
 app.use("/api/ai", aiRoutes)
+app.use("/api/practice", Practicerouter)
 
 const PORT = process.env.PORT || 5000
 
