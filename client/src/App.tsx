@@ -3,7 +3,7 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import ReplyCoach from "./pages/ReplyCoach";
 import PracticeSetup from "./pages/Practice/PracticeSetup";
-
+import PracticeChat from "./pages/Practice/PracticeChat";
 
 
 function Challenges() {
@@ -28,6 +28,7 @@ function App(){
           element={<PracticeSetup />}
         />
 
+        <Route path="/practice/session" element={<PracticeChat />} />
         <Route
           path="/challenges"
           element={<Challenges />}

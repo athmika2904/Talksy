@@ -1,5 +1,7 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Navbar from "../../components/Navbar"
+
 const situations = [
   {
     id: "new-friend",
@@ -36,6 +38,7 @@ const situations = [
 const difficulties = ["Easy", "Medium", "Hard"]
 
 function Practice() {
+  const navigate=useNavigate()
   const [selectedSituation, setSelectedSituation] = useState("")
   const [difficulty, setDifficulty] = useState("Easy")
 
@@ -164,6 +167,14 @@ function Practice() {
           <button
             type="button"
             disabled={!selectedSituation}
+            onClick={() =>
+                    navigate("/practice/session", {
+                      state: {
+                        situation: selectedSituation,
+                        difficulty,
+                      },
+                    })
+                  }
             className="bg-[#c7ff3d] px-8 py-4 text-sm font-black uppercase tracking-wider text-black transition hover:translate-x-1 disabled:cursor-not-allowed disabled:opacity-20"
           >
             Start Practice →
