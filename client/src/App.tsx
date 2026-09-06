@@ -4,7 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import ReplyCoach from "./pages/ReplyCoach";
 import PracticeSetup from "./pages/Practice/PracticeSetup";
 import PracticeChat from "./pages/Practice/PracticeChat";
-
+import PracticeFeedback from "./pages/Practice/PracticeFeedback";
 
 function Challenges() {
   return <h1>Challenges</h1>
@@ -29,6 +29,11 @@ function App(){
         />
 
         <Route path="/practice/session" element={<PracticeChat />} />
+
+        <Route
+          path="/practice/feedback"
+          element={<PracticeFeedback />}
+        />
         <Route
           path="/challenges"
           element={<Challenges />}

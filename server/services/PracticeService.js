@@ -81,3 +81,75 @@ Return ONLY the dialogue reply.
 
     return response.text.trim()
 }
+
+export async function generatePracticeFeedback(
+    situation,
+    difficulty,
+    messages
+) {
+    const conversation = messages
+        .map((message) => {
+            return `${message.sender === "user" ? "USER" : "AI"}: ${message.text}`
+        })
+        .join("\n")
+
+    const prompt = `
+You are evaluating a user's social conversation practice.
+
+SITUATION:
+${situation}
+
+DIFFICULTY:
+${difficulty}
+
+CONVERSATION:
+${conversation}
+
+Analyze ONLY the user's messages.
+
+IMPORTANT RULES:
+
+1. Judge the user's conversational ability, not their grammar.
+2. Do not judge the user personally.
+3. Do not invent things that did not happen.
+4. Base every piece of feedback on the actual conversation.
+5. Be encouraging but honest.
+6. Keep the feedback practical and specific.
+7. Consider the selected situation and difficulty.
+8. Do not give generic advice that is unrelated to the conversation.
+9. Give a score from 1 to 10.
+10. Keep strengths and improvements short.
+
+Return ONLY valid JSON.
+
+Use EXACTLY this format:
+
+{
+  "score": 8,
+  "strengths": [
+    "specific strength from the conversation",
+    "another specific strength"
+  ],
+  "improvements": [
+    "specific improvement",
+    "another specific improvement"
+  ],
+  "tip": "one practical thing the user could try next time"
+}
+`
+
+    const response = await ai.models.generateContent({
+        model: "gemini-3.5-flash-lite",
+        contents: prompt,
+    })
+
+    const text = response.text.trim()
+
+    const cleaned = text
+        .replace(/^```json\s*/i, "")
+        .replace(/^```\s*/i, "")
+        .replace(/\s*```$/i, "")
+        .trim()
+
+    return JSON.parse(cleaned)
+}

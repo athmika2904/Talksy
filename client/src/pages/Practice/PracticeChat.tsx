@@ -21,7 +21,6 @@ function PracticeChat() {
   const state = location.state as PracticeState | undefined
 
   const [message, setMessage] = useState("")
-
   const [loading, setLoading] = useState(false)
 
   const [messages, setMessages] = useState<Message[]>([
@@ -33,10 +32,8 @@ function PracticeChat() {
   ])
 
   if (!state) {
-
     return (
       <main className="min-h-screen bg-[#11110f] px-6 py-24 text-[#f4f4f0]">
-
         <div className="mx-auto max-w-3xl">
 
           <p className="text-white/40">
@@ -51,7 +48,6 @@ function PracticeChat() {
           </button>
 
         </div>
-
       </main>
     )
   }
@@ -61,6 +57,7 @@ function PracticeChat() {
     if (!message.trim() || loading) {
       return
     }
+
     if (!state) return
 
     const userText = message.trim()
@@ -77,9 +74,7 @@ function PracticeChat() {
     ]
 
     setMessages(updatedMessages)
-
     setMessage("")
-
     setLoading(true)
 
     try {
@@ -113,6 +108,19 @@ function PracticeChat() {
       setLoading(false)
 
     }
+  }
+
+  function handleFinish() {
+    if(!state){
+      return;
+    }
+    navigate("/practice/feedback", {
+      state: {
+        situation: state.situation,
+        difficulty: state.difficulty,
+        messages,
+      },
+    })
   }
 
   return (
@@ -230,9 +238,22 @@ function PracticeChat() {
 
           </div>
 
-          <p className="mt-3 text-center text-xs text-white/20">
-            There are no wrong answers. Just practice.
-          </p>
+          <div className="mt-5 flex items-center justify-between">
+
+            <p className="text-xs text-white/20">
+              There are no wrong answers. Just practice.
+            </p>
+
+            <button
+              type="button"
+              onClick={handleFinish}
+              disabled={loading || messages.length < 2}
+              className="border border-[#c7ff3d] px-5 py-3 text-xs font-black uppercase tracking-wider text-[#c7ff3d] transition hover:bg-[#c7ff3d] hover:text-black disabled:cursor-not-allowed disabled:opacity-20"
+            >
+              Finish Practice →
+            </button>
+
+          </div>
 
         </section>
 
