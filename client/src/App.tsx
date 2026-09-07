@@ -5,10 +5,7 @@ import ReplyCoach from "./pages/ReplyCoach";
 import PracticeSetup from "./pages/Practice/PracticeSetup";
 import PracticeChat from "./pages/Practice/PracticeChat";
 import PracticeFeedback from "./pages/Practice/PracticeFeedback";
-
-function Challenges() {
-  return <h1>Challenges</h1>
-}
+import {ChallengeDetails} from "./pages/Challenges/Challenges";
 function App(){
   return(
      <BrowserRouter>
@@ -36,7 +33,7 @@ function App(){
         />
         <Route
           path="/challenges"
-          element={<Challenges />}
+          element={<ChallengeDetails />}
         />
 
       </Routes>

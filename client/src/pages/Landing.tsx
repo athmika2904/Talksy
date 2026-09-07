@@ -182,11 +182,13 @@ function Feature({
   number,
   title,
   description,
+  link,
 }: FeatureProps) {
-
   return (
-    <div className="group border-b border-r border-white/10 p-8 transition hover:bg-white/3">
-
+    <Link
+      to={link}
+      className="group border-b border-r border-white/10 p-8 transition hover:bg-white/3 block"
+    >
       <div className="mb-20 flex items-start justify-between">
 
         <span className="text-xs font-bold text-white/30">
@@ -207,7 +209,7 @@ function Feature({
         {description}
       </p>
 
-    </div>
+    </Link>
   )
 }
 
