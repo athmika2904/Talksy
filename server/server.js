@@ -3,6 +3,7 @@ import cors from "cors"
 
 import aiRoutes from "./routes/aiRoutes.js"
 import Practicerouter from "./routes/practiceRoutes.js"
+import challengeRouter from "./routes/ChallengeRoutes.js"
 const app = express()
 
 app.use(cors())
@@ -23,7 +24,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/ai", aiRoutes)
 app.use("/api/practice", Practicerouter)
-
+app.use("/api/challenges",challengeRouter)
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
