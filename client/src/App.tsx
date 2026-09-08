@@ -1,4 +1,4 @@
-import {BrowserRouter,Routes,Route} from "react-router-dom";
+import {Routes,Route} from "react-router-dom";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import ReplyCoach from "./pages/ReplyCoach";
@@ -6,14 +6,31 @@ import PracticeSetup from "./pages/Practice/PracticeSetup";
 import PracticeChat from "./pages/Practice/PracticeChat";
 import PracticeFeedback from "./pages/Practice/PracticeFeedback";
 import Challenges from "./pages/Challenges/Challenges";
+import Signup from "./pages/auth/SIgnup";
+import Login from "./pages/auth/Login"
+import ProtectedRoute from "./components/ProtectedRoute"
 function App(){
   return(
-     <BrowserRouter>
       <Routes>
 
         <Route path="/" element={<Landing />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<ProtectedRoute />}>
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
+
+        <Route
+          path="/practice"
+          element={<PracticeSetup />}
+        />
+
+  <Route
+    path="/challenges"
+    element={<Challenges />}
+  />
+</Route>
 
         <Route
           path="/reply-coach"
@@ -35,9 +52,17 @@ function App(){
           path="/challenges"
           element={<Challenges />}
         />
+        <Route
+        path="/signup"
+        element={<Signup />}
+      />
+
+      <Route
+        path="/login"
+        element={<Login />}
+      />
 
       </Routes>
-    </BrowserRouter>
   )
 }
 export default App;
