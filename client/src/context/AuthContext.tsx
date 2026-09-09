@@ -1,201 +1,310 @@
 import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
+    createContext,
+    useContext,
+    useEffect,
+    useState,
 } from "react"
+
 import axios from "axios"
 
+
 interface User {
-  id: string
-  name: string
-  email: string
-  xp: number
-  streak: number
-  completedChallenges: number
+    id: string
+    name: string
+    email: string
+
+    xp: number
+    streak: number
+    completedChallenges: number
+
+    conversations: number
+    confidenceScore: number
+    confidenceSamples: number
 }
+
 
 interface AuthContextType {
-  user: User | null
-  token: string | null
-  loading: boolean
+    user: User | null
 
-  login: (
-    token: string,
-    user: User
-  ) => void
+    token: string | null
 
-  logout: () => void
+    loading: boolean
 
-  refreshUser: () => Promise<void>
+    login: (
+        token: string,
+        user: User
+    ) => void
+
+    logout: () => void
+
+    refreshUser: () => Promise<void>
+
+    updateUser: (
+        user: User
+    ) => void
 }
 
+
 const AuthContext =
-  createContext<AuthContextType | null>(null)
+    createContext<AuthContextType | null>(
+        null
+    )
+
 
 export function AuthProvider({
-  children,
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode
 }) {
-  const [user, setUser] = useState<User | null>(null)
 
-  const [token, setToken] = useState<string | null>(
-    null
-  )
-
-  const [loading, setLoading] = useState(true)
+    const [user, setUser] =
+        useState<User | null>(null)
 
 
-  // Check existing login when app starts
+    const [token, setToken] =
+        useState<string | null>(null)
 
-  useEffect(() => {
-    async function loadUser() {
-      const storedToken =
-        localStorage.getItem("token")
 
-      if (!storedToken) {
-        setLoading(false)
-        return
-      }
+    const [loading, setLoading] =
+        useState(true)
 
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/auth/me",
-          {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-            },
-          }
+
+
+    useEffect(() => {
+
+        async function loadUser() {
+
+            const storedToken =
+                localStorage.getItem(
+                    "token"
+                )
+
+
+            if (!storedToken) {
+                setLoading(false)
+                return
+            }
+
+
+            try {
+
+                const response =
+                    await axios.get(
+                        "http://localhost:5000/api/auth/me",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${storedToken}`,
+                            },
+                        }
+                    )
+
+
+                const currentUser =
+                    response.data.user
+
+
+                setToken(storedToken)
+
+                setUser(currentUser)
+
+
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(
+                        currentUser
+                    )
+                )
+
+            } catch (error) {
+
+                console.error(
+                    "Authentication check failed:",
+                    error
+                )
+
+
+                localStorage.removeItem(
+                    "token"
+                )
+
+                localStorage.removeItem(
+                    "user"
+                )
+
+
+                setToken(null)
+                setUser(null)
+
+            } finally {
+
+                setLoading(false)
+
+            }
+        }
+
+
+        loadUser()
+
+    }, [])
+
+
+    
+
+    function login(
+        newToken: string,
+        newUser: User
+    ) {
+
+        localStorage.setItem(
+            "token",
+            newToken
         )
 
-        setToken(storedToken)
 
-        setUser(response.data.user)
-
-      } catch (error) {
-        console.error(
-          "Authentication check failed:",
-          error
+        localStorage.setItem(
+            "user",
+            JSON.stringify(
+                newUser
+            )
         )
 
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
+
+        setToken(newToken)
+
+        setUser(newUser)
+    }
+
+
+    
+
+    function logout() {
+
+        localStorage.removeItem(
+            "token"
+        )
+
+        localStorage.removeItem(
+            "user"
+        )
+
 
         setToken(null)
+
         setUser(null)
-
-      } finally {
-        setLoading(false)
-      }
     }
 
-    loadUser()
-  }, [])
+
+   
+
+    async function refreshUser() {
+
+        const storedToken =
+            localStorage.getItem(
+                "token"
+            )
 
 
-  // Login
+        if (!storedToken) {
 
-  function login(
-    newToken: string,
-    newUser: User
-  ) {
-    localStorage.setItem(
-      "token",
-      newToken
-    )
+            setUser(null)
+            setToken(null)
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(newUser)
-    )
-
-    setToken(newToken)
-    setUser(newUser)
-  }
-
-
-  // Logout
-
-  function logout() {
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-
-    setToken(null)
-    setUser(null)
-  }
-
-
-  // Get latest user data from MongoDB
-
-  async function refreshUser() {
-    const storedToken =
-      localStorage.getItem("token")
-
-    if (!storedToken) {
-      setUser(null)
-      setToken(null)
-      return
-    }
-
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/api/auth/me",
-        {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
+            return
         }
-      )
 
-      const updatedUser =
-        response.data.user
 
-      setToken(storedToken)
-      setUser(updatedUser)
+        try {
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(updatedUser)
-      )
+            const response =
+                await axios.get(
+                    "http://localhost:5000/api/auth/me",
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${storedToken}`,
+                        },
+                    }
+                )
 
-    } catch (error) {
-      console.error(
-        "Could not refresh user:",
-        error
-      )
 
-      logout()
+            const updatedUser =
+                response.data.user
+
+
+            setToken(storedToken)
+
+            setUser(updatedUser)
+
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(
+                    updatedUser
+                )
+            )
+
+        } catch (error) {
+
+            console.error(
+                "Could not refresh user:",
+                error
+            )
+
+            logout()
+        }
     }
-  }
 
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        loading,
-        login,
-        logout,
-        refreshUser,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  )
+
+    function updateUser(
+        updatedUser: User
+    ) {
+
+        setUser(updatedUser)
+
+
+        localStorage.setItem(
+            "user",
+            JSON.stringify(
+                updatedUser
+            )
+        )
+    }
+
+
+    return (
+        <AuthContext.Provider
+            value={{
+                user,
+                token,
+                loading,
+
+                login,
+                logout,
+                refreshUser,
+                updateUser,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    )
 }
 
 
 export function useAuth() {
-  const context =
-    useContext(AuthContext)
 
-  if (!context) {
-    throw new Error(
-      "useAuth must be used inside AuthProvider"
-    )
-  }
+    const context =
+        useContext(AuthContext)
 
-  return context
+
+    if (!context) {
+
+        throw new Error(
+            "useAuth must be used inside AuthProvider"
+        )
+    }
+
+
+    return context
 }

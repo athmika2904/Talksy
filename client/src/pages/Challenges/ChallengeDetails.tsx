@@ -1,6 +1,6 @@
 import { useState } from "react"
 import axios from "axios"
-
+import { useAuth } from "../../context/AuthContext"
 import type { Challenge } from "./ChallengeCard"
 
 interface ChallengeDetailsProps {
@@ -25,7 +25,8 @@ export function ChallengeDetails({
   onComplete,
   onBack,
 }: ChallengeDetailsProps) {
-
+  
+  const { token } = useAuth()
   const [started, setStarted] = useState(false)
 
   const [reflection, setReflection] = useState("")
@@ -48,7 +49,12 @@ export function ChallengeDetails({
         {
           challenge,
           reflection,
-        }
+        },
+        {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
       )
 
       setEvaluation(response.data.evaluation)

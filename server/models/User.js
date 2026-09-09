@@ -1,31 +1,39 @@
 import mongoose from "mongoose"
 
+
 const challengeHistorySchema = new mongoose.Schema(
     {
         challengeId: {
             type: String,
             required: true,
         },
+
         title: {
             type: String,
             required: true,
         },
+
         difficulty: {
             type: String,
             enum: ["Easy", "Medium", "Hard"],
             required: true,
         },
+
         reward: {
             type: Number,
             required: true,
         },
+
         date: {
             type: String,
             required: true,
         },
     },
-    { _id: false }
+    {
+        _id: false,
+    }
 )
+
 
 const userSchema = new mongoose.Schema(
     {
@@ -47,6 +55,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+
+
+        /*
+            CHALLENGE PROGRESS
+        */
 
         xp: {
             type: Number,
@@ -72,12 +85,37 @@ const userSchema = new mongoose.Schema(
             type: [challengeHistorySchema],
             default: [],
         },
+
+
+
+        conversations: {
+            type: Number,
+            default: 0,
+        },
+
+      
+
+        confidenceScore: {
+            type: Number,
+            default: 50,
+            min: 0,
+            max: 100,
+        },
+
+       
+        confidenceSamples: {
+            type: Number,
+            default: 0,
+        },
     },
     {
         timestamps: true,
     }
 )
 
-const User = mongoose.model("User", userSchema)
+
+const User =
+    mongoose.model("User", userSchema)
+
 
 export default User

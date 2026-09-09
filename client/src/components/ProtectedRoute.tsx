@@ -10,7 +10,6 @@ function ProtectedRoute() {
   } = useAuth()
 
 
-  // Wait for JWT verification
 
   if (loading) {
     return (
@@ -25,8 +24,6 @@ function ProtectedRoute() {
   }
 
 
-  // Not logged in
-
   if (!user) {
     return (
       <Navigate
@@ -37,7 +34,6 @@ function ProtectedRoute() {
   }
 
 
-  // Logged in
 
   return <Outlet />
 }
