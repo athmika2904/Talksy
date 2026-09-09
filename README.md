@@ -28,7 +28,7 @@ It's to make communicating feel **more natural and less intimidating**.
 
 ## Features
 
-###  Reply Coach
+### 💬 Reply Coach
 
 Describe a message or situation you're unsure how to respond to.
 
@@ -47,7 +47,7 @@ The feature is designed around short, realistic responses rather than overly for
 
 ---
 
-###  Practice Mode
+### 🧠 Practice Mode
 
 Practice conversations without the pressure of a real social interaction.
 
@@ -70,7 +70,7 @@ After finishing, Talksy analyzes the conversation and provides:
 
 ---
 
-###  Daily Challenges
+### 🎯 Daily Challenges
 
 Talksy provides small communication challenges designed to encourage users to practice in real life.
 
@@ -92,7 +92,7 @@ The idea is to turn communication practice into small, achievable actions rather
 
 ---
 
-###  Progress Tracking
+### 📊 Progress Tracking
 
 Talksy keeps track of communication activity over time.
 
@@ -108,7 +108,7 @@ Practice performance contributes to the confidence score, allowing the dashboard
 
 ---
 
-###  Authentication
+### 🔐 Authentication
 
 Talksy includes user authentication with:
 
@@ -182,8 +182,9 @@ Talksy follows a client-server architecture.
                     └───────────┘ └─────────────┘
 
 The frontend handles the user experience while the backend handles authentication, data persistence, challenge logic, and communication with AI services.
-
+```
 Project Structure
+```
 Talksy/
 │
 ├── client/
@@ -255,10 +256,11 @@ Talksy/
 │
 ├── .gitignore
 └── README.md
+```
 Getting Started
 
 Follow these steps to run Talksy locally.
-
+```
 1. Clone the repository
 git clone https://github.com/athmika2904/Talksy.git
 cd Talksy
@@ -409,10 +411,11 @@ Challenge completed
       ├── XP
       ├── Streak
       └── History
+```
 Data Model
 
 A user stores both account information and progress information.
-
+```
 User
 │
 ├── name
@@ -433,12 +436,13 @@ User
       ├── difficulty
       ├── reward
       └── date
+```
 Design Approach
 
 Talksy is intentionally built around small interactions instead of long learning sessions.
 
 The main loop is:
-
+```
 Practice
    ↓
 Get feedback
@@ -448,7 +452,7 @@ Try again
 Build confidence
    ↓
 Practice in real life
-
+```
 Rather than presenting communication as something that can be learned entirely through theory, Talksy focuses on actually doing the conversation.
 
 Current Scope
@@ -490,13 +494,13 @@ Contributing
 Contributions are welcome.
 
 If you'd like to contribute:
-
+```
 git clone https://github.com/athmika2904/Talksy.git
-
+```
 Create a new branch:
-
+```
 git checkout -b feature/your-feature
-
+```
 Make your changes, test them locally, and open a pull request.
 
 License
